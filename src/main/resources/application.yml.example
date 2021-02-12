@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: TaggingImage
+server:
+  port: 8657
+com:
+  huhaorui:
+    taggingimage:
+      accesskeyid: 123456
+      accesskeysecret: 123456
+      path: https://www.example.com/

@@ -1,7 +1,0 @@
-# 应用名称
-spring.application.name=TaggingImage
-# 应用服务 WEB 访问端口
-server.port=8657
-com.huhaorui.taggingimage.path=https://www.example.com/
-com.huhaorui.taggingimage.accesskeyid=123
-com.huhaorui.taggingimage.accesskeysecret=123

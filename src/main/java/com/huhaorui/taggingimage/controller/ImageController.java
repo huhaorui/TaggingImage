@@ -20,26 +20,6 @@ import java.util.UUID;
 @Component
 @Controller(value = "/image")
 public class ImageController {
-    public static byte[] readInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[1024];
-        int len;
-        ByteArrayOutputStream bos = null;
-        try {
-            bos = new ByteArrayOutputStream();
-            while ((len = inputStream.read(buffer)) != -1) {
-                bos.write(buffer, 0, len);
-            }
-        } catch (IOException e) {
-            System.out.printf("IO异常：%s%n", e.getMessage());
-            throw e;
-        } finally {
-            if (null != bos) {
-                bos.close();
-            }
-        }
-        return bos.toByteArray();
-    }
-
     @RequestMapping(value = "/image/get/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] getImageById(@PathVariable String id) throws IOException {
@@ -49,7 +29,7 @@ public class ImageController {
     /**
      * 读取服务器上的图片。
      *
-     * @param id uuid值,将会以book.cover形式存取在数据库中
+     * @param id uuid值
      * @return 操作的结果
      */
     @RequestMapping(value = "/image/get", produces = MediaType.IMAGE_JPEG_VALUE)
