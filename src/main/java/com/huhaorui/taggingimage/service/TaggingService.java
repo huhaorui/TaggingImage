@@ -16,8 +16,6 @@ import static com.aliyun.imagerecog20190930.models.TaggingImageResponseBody.Tagg
 @Service
 public class TaggingService {
     TaggingClientProvider taggingClientProvider;
-    @Value(value = "${com.huhaorui.taggingimage.path}")
-    String path;
 
     @Autowired
     public void setClientProvider(TaggingClientProvider taggingClientProvider) {

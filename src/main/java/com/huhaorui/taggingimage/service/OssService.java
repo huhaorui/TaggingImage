@@ -23,7 +23,7 @@ public class OssService {
 
     public URL uploadFile(String filename, InputStream inputStream) {
         OSS oss = ossClientProvider.getClient();
-        var response = oss.putObject(bucketName, filename, inputStream);
+        oss.putObject(bucketName, filename, inputStream);
         Date expiration = new Date(new Date().getTime() + 3600 * 1000);
         URL url = oss.generatePresignedUrl(bucketName, filename, expiration);
         oss.shutdown();
