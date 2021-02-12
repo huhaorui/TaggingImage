@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.net.URL;
+import java.util.Date;
 
 @Service
 public class OssService {
@@ -19,9 +21,12 @@ public class OssService {
         this.ossClientProvider = ossClientProvider;
     }
 
-    public void uploadFile(String filename, InputStream inputStream) {
+    public URL uploadFile(String filename, InputStream inputStream) {
         OSS oss = ossClientProvider.getClient();
         var response = oss.putObject(bucketName, filename, inputStream);
-
+        Date expiration = new Date(new Date().getTime() + 3600 * 1000);
+        URL url = oss.generatePresignedUrl(bucketName, filename, expiration);
+        oss.shutdown();
+        return url;
     }
 }

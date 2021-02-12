@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.UUID;
 
 
@@ -29,14 +30,14 @@ public class ImageController {
         if (file.isEmpty()) {
             return Responses.fail("文件为空");
         }
-        UUID uuid = UUID.randomUUID();
+        URL url;
         try {
-            ossService.uploadFile(uuid.toString(), file.getInputStream());
+            url = ossService.uploadFile(UUID.randomUUID().toString(), file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
             return Responses.fail("file save error");
         }
-        return Responses.ok(uuid);
+        return Responses.ok(url);
     }
 }
 
