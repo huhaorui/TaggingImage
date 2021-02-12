@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "com.huhaorui.taggingimage.path",
+      "type": "java.lang.String",
+      "description": "The path to run this service."
+    },
+    {
+      "name": "com.huhaorui.taggingimage.accesskeyid",
+      "type": "java.lang.String",
+      "description": "AccessKeyId of Aliyun."
+    },
+    {
+      "name": "com.huhaorui.taggingimage.accesskeysecret",
+      "type": "java.lang.String",
+      "description": "AccessKeySecret of Aliyun."
+    }
+  ]
+}
