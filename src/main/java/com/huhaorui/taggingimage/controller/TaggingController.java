@@ -1,12 +1,13 @@
 package com.huhaorui.taggingimage.controller;
 
+import com.aliyun.imagerecog20190930.models.TaggingImageResponseBody.TaggingImageResponseBodyDataTags;
 import com.huhaorui.taggingimage.common.ApiResponse;
-import com.huhaorui.taggingimage.common.Responses;
 import com.huhaorui.taggingimage.service.TaggingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class TaggingController {
@@ -17,9 +18,8 @@ public class TaggingController {
         this.taggingService = taggingService;
     }
 
-    @PostMapping(value = "/tagging/{id}")
-    public ApiResponse<Object> tagging(@PathVariable String id) {
-        taggingService.processImage(id);
-        return Responses.ok();
+    @PostMapping(value = "/tagging")
+    public ApiResponse<List<TaggingImageResponseBodyDataTags>> tagging(String url) {
+        return taggingService.processImage(url);
     }
 }
