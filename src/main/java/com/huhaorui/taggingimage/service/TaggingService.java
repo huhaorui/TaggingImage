@@ -6,7 +6,6 @@ import com.huhaorui.taggingimage.common.ApiResponse;
 import com.huhaorui.taggingimage.common.Responses;
 import com.huhaorui.taggingimage.util.TaggingClientProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
