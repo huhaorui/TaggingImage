@@ -3,74 +3,41 @@ package com.huhaorui.taggingimage.controller;
 
 import com.huhaorui.taggingimage.common.ApiResponse;
 import com.huhaorui.taggingimage.common.Responses;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.huhaorui.taggingimage.service.OssService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
+import java.io.IOException;
 import java.util.UUID;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
-@Component
-@Controller(value = "/image")
+
+@RestController(value = "/image")
 public class ImageController {
-    @RequestMapping(value = "/image/get/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] getImageById(@PathVariable String id) throws IOException {
-        return getImage(id);
+    OssService ossService;
+
+    @Autowired
+    public void setOssService(OssService ossService) {
+        this.ossService = ossService;
     }
 
-    /**
-     * 读取服务器上的图片。
-     *
-     * @param id uuid值
-     * @return 操作的结果
-     */
-    @RequestMapping(value = "/image/get", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    public byte[] getImage(String id) throws IOException {
-        id = new String(Base64.getEncoder().encode(id.getBytes(StandardCharsets.UTF_8)));
-        File file = new File("image/" + id);
-        FileInputStream inputStream;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            inputStream = new FileInputStream("image/404.jpg");
-        }
-        byte[] bytes = new byte[inputStream.available()];
-        inputStream.read(bytes, 0, inputStream.available());
-        return bytes;
-    }
 
-    /**
-     * 在本地/服务器上保存图片。文件位置为image/+对uuid按照Base64进行编码
-     *
-     * @param file 上传的图片
-     * @return 操作的结果
-     */
     @PostMapping(value = "image/put")
-    @ResponseBody
     public ApiResponse<Object> putImage(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             return Responses.fail("文件为空");
         }
         UUID uuid = UUID.randomUUID();
-        Path path = Paths.get("image/" + new String(Base64.getEncoder().encode(uuid.toString().getBytes(StandardCharsets.UTF_8))));
         try {
-            file.transferTo(path);
+            ossService.uploadFile(uuid.toString(), file.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            return Responses.fail("文件保存失败");
+            return Responses.fail("file save error");
         }
         return Responses.ok(uuid);
     }
-
 }
 
 

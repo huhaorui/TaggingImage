@@ -1,7 +1,7 @@
 package com.huhaorui.taggingimage.service;
 
 import com.aliyun.imagerecog20190930.models.TaggingImageRequest;
-import com.huhaorui.taggingimage.util.ClientProvider;
+import com.huhaorui.taggingimage.util.TaggingClientProvider;
 import com.aliyun.imagerecog20190930.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,21 +9,27 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TaggingService {
-    ClientProvider clientProvider;
-    @Value("${com.huhaorui.taggingimage.path}")
+    TaggingClientProvider taggingClientProvider;
+    @Value(value = "${com.huhaorui.taggingimage.path}")
     String path;
 
     @Autowired
-    public void setClientProvider(ClientProvider clientProvider) {
-        this.clientProvider = clientProvider;
+    public void setClientProvider(TaggingClientProvider taggingClientProvider) {
+        this.taggingClientProvider = taggingClientProvider;
     }
 
     public void processImage(String id) {
-        Client client = clientProvider.getClient();
+        Client client;
+        try {
+            client = taggingClientProvider.getClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
         TaggingImageRequest taggingImageRequest = new TaggingImageRequest();
         taggingImageRequest.setImageURL(path + id);
         try {
-            client.taggingImage(taggingImageRequest);
+            var response = client.taggingImage(taggingImageRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }
