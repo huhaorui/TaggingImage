@@ -2,7 +2,6 @@ plugins {
     id 'org.springframework.boot' version '2.3.7.RELEASE'
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     id 'org.jetbrains.kotlin.jvm' version '1.4.21'
-
     id 'java'
 }
 
@@ -23,7 +22,7 @@ dependencies {
     implementation 'com.aliyun.oss:aliyun-sdk-oss:3.10.2'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'javax.activation:activation:1.1.1'
-//            no more than 2.3.3
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
