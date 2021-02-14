@@ -1,5 +1,7 @@
 package com.huhaorui.taggingimage.controller;
 
+import com.aliyun.imagerecog20190930.models.DetectFruitsResponseBody.DetectFruitsResponseBodyDataElements;
+import com.aliyun.imagerecog20190930.models.RecognizeFoodResponseBody.RecognizeFoodResponseBodyDataTopFives;
 import com.aliyun.imagerecog20190930.models.TaggingImageResponseBody.TaggingImageResponseBodyDataTags;
 import com.huhaorui.taggingimage.common.ApiResponse;
 import com.huhaorui.taggingimage.common.Responses;
@@ -32,7 +34,7 @@ public class TaggingController {
     }
 
     @PostMapping(value = "/tagging/upload")
-    public ApiResponse<List<TaggingImageResponseBodyDataTags>> uploadAndTagging(@RequestParam("file") MultipartFile file) {
+    public ApiResponse<?> uploadAndTagging(@RequestParam("file") MultipartFile file, String option) {
         if (file.isEmpty()) {
             return Responses.fail("文件为空");
         }
@@ -43,12 +45,29 @@ public class TaggingController {
             e.printStackTrace();
             return Responses.fail("file save error");
         }
-        return tagging(url.toString());
+        switch (option) {
+            case "fruit":
+                return taggingFruit(url.toString());
+            case "food":
+                return taggingFood(url.toString());
+            default:
+                return taggingAll(url.toString());
+        }
     }
 
 
-    @PostMapping(value = "/tagging")
-    public ApiResponse<List<TaggingImageResponseBodyDataTags>> tagging(String url) {
+    @PostMapping(value = "/tagging/all")
+    public ApiResponse<List<TaggingImageResponseBodyDataTags>> taggingAll(String url) {
         return taggingService.processImage(url);
+    }
+
+    @PostMapping(value = "/tagging/fruit")
+    public ApiResponse<List<DetectFruitsResponseBodyDataElements>> taggingFruit(String url) {
+        return taggingService.taggingFruit(url);
+    }
+
+    @PostMapping(value = "/tagging/food")
+    public ApiResponse<List<RecognizeFoodResponseBodyDataTopFives>> taggingFood(String url) {
+        return taggingService.taggingFood(url);
     }
 }

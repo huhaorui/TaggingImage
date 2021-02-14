@@ -1,7 +1,11 @@
 package com.huhaorui.taggingimage.service;
 
 import com.aliyun.imagerecog20190930.Client;
-import com.aliyun.imagerecog20190930.models.TaggingImageRequest;
+import com.aliyun.imagerecog20190930.models.*;
+import com.aliyun.imagerecog20190930.models.DetectFruitsResponseBody.DetectFruitsResponseBodyDataElements;
+import com.aliyun.imagerecog20190930.models.RecognizeFoodResponseBody.RecognizeFoodResponseBodyDataTopFives;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.huhaorui.taggingimage.common.ApiResponse;
 import com.huhaorui.taggingimage.common.Responses;
 import com.huhaorui.taggingimage.util.TaggingClientProvider;
@@ -34,6 +38,46 @@ public class TaggingService {
         try {
             var response = client.taggingImage(taggingImageRequest);
             return Responses.ok(response.getBody().getData().getTags());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Responses.fail("error");
+        }
+    }
+
+    public ApiResponse<List<DetectFruitsResponseBodyDataElements>> taggingFruit(String url) {
+        Client client;
+        try {
+            client = taggingClientProvider.getClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Responses.fail("error");
+        }
+        var request = new DetectFruitsRequest();
+        request.setImageURL(url);
+        try {
+            var response = client.detectFruits(request);
+            var elements = response.getBody().getData().getElements();
+            return Responses.ok("success", new Gson().fromJson(new Gson().toJson(elements), new TypeToken<List<DetectFruitsResponseBodyDataElements>>() {
+            }.getType()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Responses.fail("error");
+        }
+    }
+
+    public ApiResponse<List<RecognizeFoodResponseBodyDataTopFives>> taggingFood(String url) {
+        Client client;
+        try {
+            client = taggingClientProvider.getClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Responses.fail("error");
+        }
+        var request = new RecognizeFoodRequest();
+        request.setImageURL(url);
+        try {
+            var response = client.recognizeFood(request);
+            return Responses.ok(response.getBody().getData().getTopFives());
         } catch (Exception e) {
             e.printStackTrace();
             return Responses.fail("error");

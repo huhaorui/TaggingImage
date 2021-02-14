@@ -2,10 +2,12 @@ spring:
   application:
     name: TaggingImage
 server:
-  port: 8657
+  port: 8659
 com:
   huhaorui:
     taggingimage:
-      accesskeyid: 123456
-      accesskeysecret: 123456
-      path: https://www.example.com/
+      accesskeyid: keyid
+      accesskeysecret: keysecret
+      oss:
+        path: oss-cn-shanghai-internal.aliyuncs.com
+        bucket: tagging-image
