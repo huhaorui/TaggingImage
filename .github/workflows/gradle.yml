@@ -42,7 +42,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }} # 之前GitHub添加的Token
         with:
           tag_name: Release  # (tag)标签名称
-          release_name: Release ${{steps.get_info.outputs.file_path}}
+          release_name: Release ${{steps.get_info.outputs.version}}
           draft: false # 是否是草稿
           prerelease: false # 是否是预发布
       - name: Upload Release Asset
