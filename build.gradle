@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.huhaorui.taggingimage'
-version = '1.0.0.RELEASE'
+version = '1.0.1.RELEASE'
 sourceCompatibility = '11'
 
 repositories {
