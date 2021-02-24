@@ -10,6 +10,11 @@
 <div id="app">
     <form action="/tagging/upload" enctype="multipart/form-data" method="post">
         <input type="file" name="file">
+        <select name="option">
+            <option value="fruit">水果</option>
+            <option value="food">食物</option>
+            <option value="default">默认</option>
+        </select>
         <input type="submit">
     </form>
 </div>
