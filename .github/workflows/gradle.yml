@@ -25,7 +25,7 @@ jobs:
           sed -e '/aliyun/d' build.gradle >> build.gradle.1
           sed -e '/aliyun/d' settings.gradle >> settings.gradle.1
           mv build.gradle.1 build.gradle
-          mv setting.gradle.1 setting.gradle
+          mv settings.gradle.1 settings.gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Build with Gradle
